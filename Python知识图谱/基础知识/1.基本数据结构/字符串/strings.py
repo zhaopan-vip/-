@@ -25,7 +25,6 @@ print(r'line1\n2')  # raw strings
 -6  -5  -4  -3  -2  -1
 """
 print(len(s))       # 取长度
-s += 'hijk'         # 支持加号运算符
 
 # Text Sequence Type - str
 # https://docs.python.org/3.6/library/stdtypes.html#textseq
@@ -35,3 +34,17 @@ p = str(b, 'utf-8')     # class str, real string, print "1234567890"
 q = b.decode()          # class bytes => class str, print "1234567890"
 # str(bytes, encoding, errors) is equivalent to bytes.decode(encoding, errors)
 assert p == q
+
+# 字符串的拼接操作
+s += 'hijk'         # 支持加号运算符
+s = '.'.join([x for x in s])    # join 多个元素会更高效
+
+# 格式化
+print('%d - %s' % (len(s), s))
+print('{} - {}'.format(len(s), s))
+print('{size} - {data}'.format(size=len(s), data=s))
+
+# 常用函数
+s.replace('h', 'H')
+s.split('h')
+s.strip()

@@ -18,7 +18,7 @@ d4 = dict(name='jason', age=20, gender='male')
 assert d1 == d2 == d3 == d4
 # 思考上述几种方式的效率，哪一种最快？
 # https://docs.python.org/3/library/dis.html#module-dis
-# python3.8.5 版本推出的 dis 工具，可以将 CPython 代码进行反编译分析
+# dis 工具，可以将 CPython 代码进行反编译分析
 # d1 > d2 > d4 > d3 ? 猜测 d2 直接由 map 对象创建，可能会比 d4 要快，如果 d4 需要创建 map 对象的话
 """
 # python3 -m timeit -n 1000000 "d = {'name': 'jason', 'age': 20, 'gender': 'male'}"
@@ -82,3 +82,6 @@ python3 -m timeit -n 1000000 "d4 = dict(name='jason', age=20, gender='male')"
 """
 # d4 对应的 f4 函数，比 d2 对应的 f2 函数，要少一个 BUILD_CONST_KEY_MAP 步骤，所以 d4 > d2
 # 这里很清晰的看到，kw 并没有拿去创建 key-map 对象，而是 Call——Function——KW 在 C 代码中直接创建的
+
+# 关于字典在python3.6以及3.7版本内部实现变迁的问题，查看源码描述
+# https://github.com/python/cpython/blob/3.8/Objects/dictobject.c
