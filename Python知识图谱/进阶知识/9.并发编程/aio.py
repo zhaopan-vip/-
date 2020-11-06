@@ -153,3 +153,48 @@ event_loop.call_soon(trace_main_loop_task)
 # 2. Queue.put -> gevent 伪线程开始处理，实际上已经是主线程了，调用各种不带 async 的函数是没有问题的
 # 不论怎么处理都会有点奇怪的感觉，主要还是 gevent 与 asyncio 在同一个工程里应用导致的
 # 尽量还是选统一的方式来开发
+
+# 思考：如果 loop 执行一个协程进行while循环不退出，那么 asyncio.run_coroutine_threadsafe 是否阻塞调用线程？
+
+async def run_not_exit(count: int = 3, delay: int = 1) -> int:
+    while count > 0:
+        print('run_not_exit trace...(%d, %d)' % (count, delay))
+        await asyncio.sleep(delay)
+        count -= 1
+    return count
+
+fu = asyncio.run_coroutine_threadsafe(run_not_exit(), loop=event_loop)
+print('asyncio.run_coroutine_threadsafe run_not_exit')
+
+# 结论是不阻塞，但是如果对其返回的 future 进行 await，那就会阻塞了
+# 通过这个方式，可以让协程有序的执行指定的任务，避免某些关键代码段重复进入执行
+print(fu.result())
+
+# 思考：多个协程任务的等待
+# try:
+#    fu = asyncio.gather(run_not_exit(), run_in_task_thread(3), loop=event_loop)
+#    print(fu.result())
+# except TypeError as e:
+#    print('gather exception: {}'.format(e))
+
+async def gather_wait():
+    try:
+        tasks = asyncio.gather(*[run_not_exit(i) for i in range(0, 3)])
+        await tasks
+        print(tasks.result())
+
+        # 思考：asyncio.wrap_future
+        fu = asyncio.ensure_future(run_not_exit())
+        ret = await fu
+        print(fu.result())
+    except Exception as e:
+        print(e)
+
+fu = asyncio.run_coroutine_threadsafe(gather_wait(), loop=event_loop)
+print(fu.result())
+
+# 思考：协程不等待
+async def run_without_await():
+    print('run_without_await')
+
+asyncio.run_coroutine_threadsafe(run_without_await(), loop=event_loop)
