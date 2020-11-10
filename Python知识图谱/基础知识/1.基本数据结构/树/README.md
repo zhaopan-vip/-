@@ -5,7 +5,7 @@ https://leetcode-cn.com/leetbook/detail/data-structure-binary-tree/
 先序遍历（前序遍历）
 
 ## In-Order Traversal
-中序遍历
+中序遍历(二叉树)
 
 ## Post-Order Traversal
 后序遍历
@@ -14,7 +14,7 @@ https://leetcode-cn.com/leetbook/detail/data-structure-binary-tree/
 递归（利用系统堆栈展开运算）
 
 ## Iterative
-迭代（一次展开部分进行运算）
+迭代（循环，一次展开部分进行运算）
 
 ## 总结
 总体来说，无论是利用递归还是迭代，他们都是重复针对当前节点的（左、自身、右）来进行操作；

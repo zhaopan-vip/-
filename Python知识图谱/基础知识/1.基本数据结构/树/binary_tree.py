@@ -59,6 +59,25 @@ class RecursiveMode:
             RecursiveMode.post_order(node.right, visit_it)
             visit_it(node.val)
 
+    @staticmethod
+    def level_order(node: TreeNode, visit_it: callable):
+        # 深度优先搜索 - 需要用列表缓存节点
+        res = []
+        RecursiveMode.dfs(node, 0, res)
+        for level_nodes in res:
+            for p in level_nodes:
+                visit_it(p.val)
+
+    @staticmethod
+    def dfs(node: TreeNode, depth: int, res: []):
+        if not node:
+            return
+        if len(res) == depth:
+            res.append([])
+        res[depth].append(node)
+        RecursiveMode.dfs(node.left, depth+1, res)
+        RecursiveMode.dfs(node.right,depth+1, res)
+
 
 class IterativeMode:
     """
@@ -67,6 +86,7 @@ class IterativeMode:
 
     @staticmethod
     def level_order(node: TreeNode, visit_it: callable):
+        # 广度优先搜索 - 每一层都要展开入栈
         if not node:
             return
 
@@ -207,6 +227,10 @@ if __name__ == '__main__':
     level_order_array = []
     IterativeMode.level_order(root, lambda x: level_order_array.append(x))
     assert level_order_array == [1, 2, 4, 3, 5, 6, 9, 7, 8]
+
+    array_level_order = []
+    RecursiveMode.level_order(root, lambda x: array_level_order.append(x))
+    assert array_level_order == level_order_array
 
     array_pre_order = []
     IterativeMode.pre_order(root, lambda x: array_pre_order.append(x))
