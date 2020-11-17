@@ -90,19 +90,17 @@ class IterativeMode:
         if not node:
             return
 
-        stack = [node]
-        while stack:
-            # copy
-            tmp = []
-            while stack:
-                top = stack.pop()
+        queue = [node]
+        while queue:
+            for _ in range(len(queue)):
+                # 每次从头开始出栈
+                top = queue.pop(0)
                 visit_it(top.val)
                 # 注意这里加入的顺序
                 if top.left:
-                    tmp.append(top.left)
+                    queue.append(top.left)
                 if top.right:
-                    tmp.append(top.right)
-            stack = tmp[::-1]
+                    queue.append(top.right)
 
     @staticmethod
     def pre_order(node: TreeNode, visit_it: callable):
