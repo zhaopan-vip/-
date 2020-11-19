@@ -16,3 +16,12 @@ l = list(l)
 l = l[:]        # new (shallow) copy of the list
 l = l[::-1]     # revers of the list
 print(l[-1])    # 负数索引
+
+l.remove(5)
+l.pop()
+l.pop(0)
+l.count(3)
+l.sort(key=lambda x: -x)
+l.extend([6,7,8,9,10])
+l.index(8)
+l.reverse()
