@@ -7,19 +7,7 @@
 @desc: 二叉树 binary tree
 """
 
-
-class TreeNode:
-    """
-    Define Binary Tree Node Structure
-    """
-
-    def __init__(self, val, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
-
-    def __str__(self):
-        return 'val={}'.format(self.val)
+from node import TreeNode
 
 
 # https://leetcode.com/explore/learn/card/data-structure-tree/134/traverse-a-tree/992/
